@@ -25,8 +25,14 @@ class PostsNew extends Component {
           />
 
         <Field
-          label="Tags"
-          name="tags"
+          label="Categories"
+          name="categories"
+          component={this.renderField}
+        />
+
+        <Field
+          label="Post Content"
+          name="content"
           component={this.renderField}
         />
 
@@ -36,7 +42,28 @@ class PostsNew extends Component {
   }
 }
 
+function validate(values) {
+  // console.log(values) -> { title: 'asdf', categories: 'asdf', content: 'asdf'}
+  const errors = {};
+
+  // validate the inputs from 'values'
+  if (!values.title) {
+    errors.title = "Enter a title";
+  }
+  if (!values.categories) {
+    errors.categories = 'Enter some categories';
+  }
+  if (!values.content) {
+    errors.content = 'Enter some content please';
+  }
+
+  // if errors is empty, the form is fine to submit
+  // if errors has *any* properties, redux form assumes form is invalid
+  return errors;
+}
+
 export default reduxForm({
   //string asigned to the form property must be unique
+  validate,
   form: 'PostsNewForm'
 })(PostsNew);
